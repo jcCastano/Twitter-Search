@@ -1,8 +1,10 @@
-package com.example.repo.authentication;
+package com.example.repo.interactor;
 
 import android.util.Base64;
 
 import com.example.repo.TwitterClient;
+import com.example.repo.authentication.OAuthAPI;
+import com.example.repo.authentication.OAuthResponse;
 import com.example.repo.interactor.UseCaseSingle;
 
 import io.reactivex.Single;
