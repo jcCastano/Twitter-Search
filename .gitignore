@@ -36,5 +36,10 @@ Thumbs.db
 *.gradle
 build/
 
+# Gradle
+gradlew
+gradlew.bat
+gradle/
+
 #NDK
 obj/
