@@ -12,6 +12,7 @@ public interface OAuthAPI {
 
     @FormUrlEncoded
     @POST("/oauth2/token")
-    Single<OAuthResponse> getToken(@Header("Authorization") String authorization, @Field("grant_type") String grantType);
+    Single<OAuthResponse> getToken(@Header("Authorization") String authorization,
+                                   @Field("grant_type") String grantType);
 
 }
