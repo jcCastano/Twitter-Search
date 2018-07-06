@@ -1,31 +1,26 @@
 package com.example.repo.interactor;
 
 import com.example.repo.TwitterClient;
+import com.example.repo.interactor.model.TweetSearchRequest;
 import com.example.repo.search.TweetsAPI;
 import com.example.repo.search.model.SearchResponse;
 
 import io.reactivex.Observable;
 
-public class SearchTweetsUseCase extends UseCaseObservable<SearchResponse> {
+public class SearchTweetsUseCase extends UseCaseObservableWithParams<SearchResponse, TweetSearchRequest> {
 
     static final String AUTHORIZATION = "Bearer";
     private String token;
-    private String query;
-    private String maxId;
-    private boolean includeEntities;
 
-    public SearchTweetsUseCase(String token, String query, String maxId, boolean includeEntities) {
+    public SearchTweetsUseCase(String token) {
         this.token = token;
-        this.query = query;
-        this.maxId = maxId;
-        this.includeEntities = includeEntities;
     }
 
     @Override
-    protected Observable<SearchResponse> buildUseCaseObservable() {
+    protected Observable<SearchResponse> buildUseCaseObservable(TweetSearchRequest request) {
         TweetsAPI service = TwitterClient.makeService(TweetsAPI.class);
         String authorizationStr = AUTHORIZATION + " " + token;
-        return service.search(authorizationStr, query, maxId, includeEntities);
+        return service.search(authorizationStr, request.getQuery(), request.getMaxId(), request.getIncludeEntities());
     }
 
 }
