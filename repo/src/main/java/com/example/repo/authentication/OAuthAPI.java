@@ -1,5 +1,7 @@
 package com.example.repo.authentication;
 
+import com.example.repo.authentication.model.OAuthResponse;
+
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

@@ -1,4 +1,4 @@
-package com.example.repo.authentication;
+package com.example.repo.authentication.model;
 
 import com.google.gson.annotations.SerializedName;
 

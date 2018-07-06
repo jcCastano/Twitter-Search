@@ -3,7 +3,7 @@ package com.example.twittersearch.interactor;
 import android.util.Log;
 
 import com.example.repo.interactor.FetchTokenUseCase;
-import com.example.repo.authentication.OAuthResponse;
+import com.example.repo.authentication.model.OAuthResponse;
 import com.example.twittersearch.AppPref;
 import com.example.twittersearch.BuildConfig;
 
