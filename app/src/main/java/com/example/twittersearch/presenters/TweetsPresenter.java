@@ -91,6 +91,7 @@ public class TweetsPresenter implements Presenter {
         public void onSubscribe(Disposable d) {
             Log.d(TAG, "onSubscribe: " + d);
             mainView.progressBar(true);
+            mainView.results(false);
         }
 
         @Override
@@ -113,8 +114,13 @@ public class TweetsPresenter implements Presenter {
         public void onComplete() {
             Log.d(TAG, "onComplete: ");
             mainView.progressBar(false);
+            mainView.results(emptyResults());
         }
     };
+
+    private boolean emptyResults() {
+        return statuses.size() == 0;
+    }
 
     SingleObserver<OAuthResponse> tokenObserver = new SingleObserver<OAuthResponse>() {
         @Override

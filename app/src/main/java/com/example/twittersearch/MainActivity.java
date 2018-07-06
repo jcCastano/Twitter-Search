@@ -10,10 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.twittersearch.presenters.MainView;
 import com.example.twittersearch.presenters.SearchAdapter;
 import com.example.twittersearch.presenters.TweetsPresenter;
+import com.example.twittersearch.utils.ViewUtil;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
     private SearchAdapter searchAdapter;
+    private TextView emptyResults;
     String query = "";
 
     @Override
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         progressBar = findViewById(R.id.progressView);
         mRecyclerView = findViewById(R.id.searchResultsView);
+        emptyResults = findViewById(R.id.emptyResultsView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -77,23 +81,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     };
 
-
-    @Override
-    public void setQuery(String query) {
-
-    }
-
     @Override
     public void results(boolean empty) {
-
+        ViewUtil.changeViewVisibility(emptyResults, empty);
     }
 
     @Override
     public void progressBar(boolean show) {
-        if (show)
-            progressBar.setVisibility(View.VISIBLE);
-        else
-            progressBar.setVisibility(View.INVISIBLE);
+        ViewUtil.changeViewVisibility(progressBar, show);
     }
 
     @Override

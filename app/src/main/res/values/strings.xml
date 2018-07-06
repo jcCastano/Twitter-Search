@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Twitter Search</string>
     <string name="search_title">Search</string>
+    <string name="empty_result_set">No tweets found. Try searching for a new keyword/hashtag. </string>
 </resources>
