@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.example.twittersearch.interactor.CheckForTokenUseCase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         pref = new AppPref(getApplicationContext());
 
-        new CheckForTokenUseCase(pref).execute();
     }
 
 }
