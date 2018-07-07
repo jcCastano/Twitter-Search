@@ -2,11 +2,9 @@ package com.example.repo.search.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-
 public class Status {
 
-    public Metadata metadata;
+    public SearchMetadata searchMetadata;
 
     @SerializedName("created_at")
     public String createdAt;

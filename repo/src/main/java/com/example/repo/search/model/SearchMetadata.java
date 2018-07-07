@@ -2,7 +2,7 @@ package com.example.repo.search.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Metadata {
+public class SearchMetadata {
 
     @SerializedName("max_id_str")
     public String maxIdStr;
