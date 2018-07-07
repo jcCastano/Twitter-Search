@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private ProgressBar progressBar;
     private SearchAdapter searchAdapter;
     private TextView emptyResults;
+    private MenuItem menuItemSearch;
     String query = "";
 
     @Override
@@ -63,12 +64,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem search = menu.findItem(R.id.app_bar_search);
-        SearchView searchView = (SearchView) search.getActionView();
+        menuItemSearch = menu.findItem(R.id.app_bar_search);
+        SearchView searchView = (SearchView) menuItemSearch.getActionView();
         searchView.setOnQueryTextListener(searchListener);
+        searchView.setQuery("", false);
+        menuItemSearch.setVisible(presenter.isReady());
 
-        if (presenter.isReady())
-            searchView.setQuery("", false);
         return true;
     }
 
@@ -110,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void progressBar(boolean show) {
         ViewUtil.changeViewVisibility(progressBar, show);
+        if (menuItemSearch != null)
+            menuItemSearch.setVisible(!show);
     }
 
     @Override

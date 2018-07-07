@@ -107,8 +107,12 @@ public class TweetsPresenter implements Presenter {
 
     public void onBindViewHolder(SearchAdapter.ViewHolder holder, int position) {
         Picasso.get().load(statuses.get(position).user.profileImageUrl.replace("_normal.jpg", ".jpg")).into(holder.profileImage);
-        holder.userNameView.setText(statuses.get(position).user.name);
-        holder.tweet.setText(statuses.get(position).text);
+        holder.userNameView.setText(getTextToDisplay(statuses.get(position).user.name));
+        holder.tweet.setText(getTextToDisplay(statuses.get(position).text));
+    }
+
+    private String getTextToDisplay(String value) {
+        return value + "\n";
     }
 
     Observer<SearchResponse> searchObserver = new Observer<SearchResponse>() {
