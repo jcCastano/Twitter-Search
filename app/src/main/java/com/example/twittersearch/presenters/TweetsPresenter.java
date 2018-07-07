@@ -152,14 +152,16 @@ public class TweetsPresenter implements Presenter {
         @Override
         public void onSubscribe(Disposable d) {
             Log.d(TAG, "onSubscribe: " + d);
+            mainView.progressBar(true);
         }
 
         @Override
         public void onSuccess(OAuthResponse oAuthResponse) {
             Log.d(TAG, "onSuccess: " + oAuthResponse.accessToken);
             pref.setAuthToken(oAuthResponse.accessToken);
-            ready = true;
+            hasToken = true;
             start();
+            mainView.progressBar(false);
         }
 
         @Override
