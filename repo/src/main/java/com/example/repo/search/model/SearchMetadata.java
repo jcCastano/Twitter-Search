@@ -5,30 +5,30 @@ import com.google.gson.annotations.SerializedName;
 public class Metadata {
 
     @SerializedName("max_id_str")
-    String maxIdStr;
+    public String maxIdStr;
 
     @SerializedName("next_results")
-    String nextResults;
+    public String nextResults;
 
     @SerializedName("since_id_str")
-    String sinceIdStr;
+    public String sinceIdStr;
 
     @SerializedName("query")
-    String query;
+    public String query;
 
     @SerializedName("count")
-    int count;
+    public int count;
 
     @SerializedName("max_id")
-    long maxId;
+    public long maxId;
 
     @SerializedName("since_id")
-    int sinceId;
+    public int sinceId;
 
     @SerializedName("completed_in")
-    double completedIn;
+    public double completedIn;
 
     @SerializedName("refresh_url")
-    String refreshUrl;
+    public String refreshUrl;
 
 }
