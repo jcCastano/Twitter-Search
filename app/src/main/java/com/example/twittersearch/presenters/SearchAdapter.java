@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,11 +39,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageView profileImage;
         public TextView userNameView;
+        public TextView tweet;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            profileImage = itemView.findViewById(R.id.profileImage);
             userNameView = itemView.findViewById(R.id.userNameView);
+            tweet = itemView.findViewById(R.id.tweet);
         }
     }
 

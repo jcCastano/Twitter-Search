@@ -1,15 +1,18 @@
 package com.example.twittersearch.presenters;
 
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 
 import com.example.repo.authentication.model.OAuthResponse;
 import com.example.repo.interactor.FetchTokenUseCase;
 import com.example.repo.interactor.SearchTweetsUseCase;
 import com.example.repo.interactor.model.TweetSearchRequest;
+import com.example.repo.search.model.SearchMetadata;
 import com.example.repo.search.model.SearchResponse;
 import com.example.repo.search.model.Status;
 import com.example.twittersearch.AppPref;
 import com.example.twittersearch.BuildConfig;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class TweetsPresenter implements Presenter {
 
     private static final String TAG = "TweetsPresenter";
     private List<Status> statuses = new ArrayList<>();
+    private SearchMetadata searchMetadata = null;
     private AppPref pref;
     private MainView mainView;
     private SearchTweetsUseCase searchTweetsUseCase;
@@ -49,7 +53,25 @@ public class TweetsPresenter implements Presenter {
 
     @Override
     public void loadMore() {
+        if (searchMetadata != null) {
+            String max_id = null;
+            boolean includeEntities = false;
 
+            if (searchMetadata.nextResults != null) {
+                String[] nextResultsSplit = searchMetadata.nextResults.replace("?", "").split("[&]");
+                for (String value : nextResultsSplit) {
+                    if (!value.isEmpty()) {
+                        String[] queryFieldSplit = value.split("=");
+                        if (queryFieldSplit[0].equalsIgnoreCase("max_Id"))
+                            max_id = queryFieldSplit[1];
+                        else if (queryFieldSplit[0].equalsIgnoreCase("include_entities"))
+                            includeEntities = Boolean.valueOf(queryFieldSplit[1]);
+                    }
+                }
+
+                searchTweets(searchMetadata.query, max_id, includeEntities);
+            }
+        }
     }
 
     @Override
@@ -76,6 +98,7 @@ public class TweetsPresenter implements Presenter {
 
     public void clearResults() {
         statuses.clear();
+        searchMetadata = null;
     }
 
     public int getTweetCount() {
@@ -83,7 +106,9 @@ public class TweetsPresenter implements Presenter {
     }
 
     public void onBindViewHolder(SearchAdapter.ViewHolder holder, int position) {
+        Picasso.get().load(statuses.get(position).user.profileImageUrl.replace("_normal.jpg", ".jpg")).into(holder.profileImage);
         holder.userNameView.setText(statuses.get(position).user.name);
+        holder.tweet.setText(statuses.get(position).text);
     }
 
     Observer<SearchResponse> searchObserver = new Observer<SearchResponse>() {
@@ -98,6 +123,7 @@ public class TweetsPresenter implements Presenter {
         public void onNext(SearchResponse searchResponse) {
             Log.d(TAG, "onNext: " + searchResponse.statuses);
             statuses.addAll(searchResponse.statuses);
+            searchMetadata = searchResponse.searchMetadata;
 
             int count = statuses.size();
             int startPosition = count + 1;

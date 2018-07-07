@@ -6,16 +6,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.twittersearch.presenters.MainView;
 import com.example.twittersearch.presenters.SearchAdapter;
 import com.example.twittersearch.presenters.TweetsPresenter;
 import com.example.twittersearch.utils.ViewUtil;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         searchAdapter = new SearchAdapter(presenter);
         mRecyclerView.setAdapter(searchAdapter);
+
+        mRecyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -78,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
         public boolean onQueryTextChange(String newText) {
             query = newText;
             return true;
+        }
+    };
+
+    RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            Log.d(TAG, "onScrollStateChanged: " + newState);
+            if (newState == SCROLL_STATE_IDLE) {
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // TODO: Refresh to show new tweets
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    presenter.loadMore();
+                }
+            }
         }
     };
 
