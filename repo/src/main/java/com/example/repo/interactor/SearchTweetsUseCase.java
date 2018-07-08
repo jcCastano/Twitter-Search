@@ -9,18 +9,18 @@ import io.reactivex.Observable;
 
 public class SearchTweetsUseCase extends UseCaseObservableWithParams<SearchResponse, TweetSearchRequest> {
 
-    static final String AUTHORIZATION = "Bearer";
-    private String token;
+    static final String AUTHORIZATION_TYPE = "Bearer";
+    protected String authorization;
+    TweetsAPI service;
 
     public SearchTweetsUseCase(String token) {
-        this.token = token;
+        service = TwitterClient.makeService(TweetsAPI.class);
+        authorization = AUTHORIZATION_TYPE + " " + token;
     }
 
     @Override
     protected Observable<SearchResponse> buildUseCaseObservable(TweetSearchRequest request) {
-        TweetsAPI service = TwitterClient.makeService(TweetsAPI.class);
-        String authorizationStr = AUTHORIZATION + " " + token;
-        return service.search(authorizationStr, request.getQuery(), request.getMaxId(), request.getIncludeEntities());
+        return service.search(authorization, request.getQuery(), request.getMaxId(), request.getIncludeEntities());
     }
 
 }

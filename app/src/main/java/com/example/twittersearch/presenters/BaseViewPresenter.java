@@ -1,6 +1,6 @@
 package com.example.twittersearch.presenters;
 
-public interface BasePresenter {
+public interface BaseViewPresenter {
 
     void start();
 

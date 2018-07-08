@@ -9,14 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.twittersearch.presenters.MainView;
 import com.example.twittersearch.presenters.SearchAdapter;
-import com.example.twittersearch.presenters.TweetsPresenter;
+import com.example.twittersearch.presenters.TweetsViewPresenter;
 import com.example.twittersearch.utils.ViewUtil;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -26,12 +24,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
     private static AppPref pref;
-    private TweetsPresenter presenter;
+    private TweetsViewPresenter presenter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
     private SearchAdapter searchAdapter;
     private TextView emptyResults;
-    private MenuItem menuItemSearch;
     String query = "";
 
     @Override
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setSupportActionBar(toolbar);
         pref = new AppPref(getApplicationContext());
 
-        presenter = new TweetsPresenter(pref, this);
+        presenter = new TweetsViewPresenter(pref, this);
 
         searchAdapter = new SearchAdapter(presenter);
         mRecyclerView.setAdapter(searchAdapter);
@@ -64,11 +61,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        menuItemSearch = menu.findItem(R.id.app_bar_search);
+        MenuItem menuItemSearch = menu.findItem(R.id.app_bar_search);
         SearchView searchView = (SearchView) menuItemSearch.getActionView();
         searchView.setOnQueryTextListener(searchListener);
         searchView.setQuery("", false);
-        menuItemSearch.setVisible(presenter.isReady());
 
         return true;
     }
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             Log.d(TAG, "onScrollStateChanged: " + newState);
             if (newState == SCROLL_STATE_IDLE) {
                 if (!recyclerView.canScrollVertically(-1)) {
-                    // TODO: Refresh to show new tweets
+                    presenter.refreshSearch();
                 } else if (!recyclerView.canScrollVertically(1)) {
                     presenter.loadMore();
                 }
@@ -111,13 +107,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void progressBar(boolean show) {
         ViewUtil.changeViewVisibility(progressBar, show);
-        if (menuItemSearch != null)
-            menuItemSearch.setVisible(!show);
     }
 
     @Override
     public void updateUI(int position, int count) {
         searchAdapter.notifyItemRangeInserted(position, count);
+    }
+
+    @Override
+    public void updateUI() {
+        searchAdapter.notifyDataSetChanged();
     }
 
     @Override

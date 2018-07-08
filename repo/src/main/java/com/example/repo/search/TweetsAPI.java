@@ -15,4 +15,10 @@ public interface TweetsAPI {
                                       @Query("max_id") String maxId,
                                       @Query("include_entities") boolean includeEntities);
 
+    @GET("1.1/search/tweets.json")
+    Observable<SearchResponse> refresh(@Header("Authorization") String authorization,
+                                      @Query("q") String query,
+                                      @Query("since_id") String sinceId,
+                                      @Query("include_entities") boolean includeEntities);
+
 }

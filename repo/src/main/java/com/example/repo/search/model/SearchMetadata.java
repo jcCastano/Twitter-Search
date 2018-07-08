@@ -23,7 +23,7 @@ public class SearchMetadata {
     public long maxId;
 
     @SerializedName("since_id")
-    public int sinceId;
+    public long sinceId;
 
     @SerializedName("completed_in")
     public double completedIn;

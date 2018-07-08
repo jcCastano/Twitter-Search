@@ -6,16 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.twittersearch.R;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
-    private TweetsPresenter presenter;
+    private TweetsViewPresenter presenter;
 
-    public SearchAdapter(TweetsPresenter presenter) {
+    public SearchAdapter(TweetsViewPresenter presenter) {
         this.presenter = presenter;
     }
 

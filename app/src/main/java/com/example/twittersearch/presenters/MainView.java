@@ -8,6 +8,8 @@ public interface MainView {
 
     void updateUI(int position, int count);
 
+    void updateUI();
+
     void showError(Throwable e);
 
 }
