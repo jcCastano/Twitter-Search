@@ -1,6 +1,5 @@
 package com.example.twittersearch.presenters;
 
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 
 import com.example.repo.authentication.model.OAuthResponse;
@@ -38,12 +37,16 @@ public class TweetsPresenter implements Presenter {
         this.mainView = mainView;
         String token = pref.getAuthToken();
         if (token == null || token.isEmpty()) {
-            FetchTokenUseCase fetchTokenUseCase = new FetchTokenUseCase(BuildConfig.CONSUMER_KEY, BuildConfig.CONSUMER_SECRET);
-            fetchTokenUseCase.execute(tokenObserver, AndroidSchedulers.mainThread());
+            getToken();
         } else {
             hasToken = true;
             start();
         }
+    }
+
+    public void getToken() {
+        FetchTokenUseCase fetchTokenUseCase = new FetchTokenUseCase(BuildConfig.CONSUMER_KEY, BuildConfig.CONSUMER_SECRET);
+        fetchTokenUseCase.execute(tokenObserver, AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -79,7 +82,8 @@ public class TweetsPresenter implements Presenter {
         if (hasToken) {
             ready = true;
             searchTweetsUseCase = new SearchTweetsUseCase(pref.getAuthToken());
-        }
+        } else
+            getToken();
     }
 
     @Override
