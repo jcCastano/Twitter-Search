@@ -35,6 +35,7 @@ public class TweetsViewPresenter implements ViewPresenter, TweetDataPresenter {
     private TweetsRefeshObserver tweetsRefeshObserver;
     private boolean hasToken = false;
     private boolean ready = false;
+    private static final int MAX_TWEET_RESULTS_COUNT = 15;
 
     public TweetsViewPresenter(AppPref pref, MainView mainView) {
         this.pref = pref;
@@ -153,6 +154,13 @@ public class TweetsViewPresenter implements ViewPresenter, TweetDataPresenter {
 
     @Override
     public void addTweetsToTop(List<Status> statusesResults, SearchMetadata searchMetadata) {
+        int backfillNum = MAX_TWEET_RESULTS_COUNT - statusesResults.size();
+        if (backfillNum > 0) {
+            for (int i = 0; i < backfillNum; i++) {
+                statusesResults.add(statuses.get(i));
+            }
+        }
+
         this.statuses = statusesResults;
         this.searchMetadata = searchMetadata;
         mainView.updateUI();
